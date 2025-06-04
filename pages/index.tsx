@@ -1,6 +1,8 @@
+// index.tsx
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
@@ -19,9 +21,10 @@ export default function Home() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-white text-primary dark:bg-gray-900 dark:text-white transition-colors duration-500">
+    <div className="relative w-full min-h-screen font-sans bg-gradient-to-br from-slate-100 via-white to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 text-gray-800 dark:text-gray-100 transition-colors duration-500 overflow-x-hidden">
       <Head>
         <title>Arul Michael | AI-Driven Developer</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
 
       {/* Navbar */}
@@ -60,86 +63,71 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* About Me */}
-      <motion.section
-        variants={fadeInUp}
-        initial="initial"
-        animate="animate"
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="w-full px-8 py-16 bg-white dark:bg-gray-800 shadow-inner rounded"
-      >
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-blue-700 dark:text-blue-300 mb-6">About Me</h2>
-          <p className="text-lg text-gray-700 dark:text-gray-300">
-            I’m a Full Stack Developer with experience in Android, AI-based web systems, and backend development.
-            I enjoy integrating machine learning and computer vision with modern frontend frameworks.
-            Currently pursuing my Master's in Computer Science at DePaul University (Expected Dec 2025),
-            I’m passionate about building scalable software across platforms with clean UI and robust APIs.
-          </p>
-        </div>
-      </motion.section>
-
       {/* Projects */}
       <motion.section
         variants={fadeInUp}
         initial="initial"
-        animate="animate"
-        transition={{ duration: 0.6, delay: 0.4 }}
-        className="w-full px-8 py-16 bg-blue-50 dark:bg-gray-700"
+        whileInView="animate"
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="w-full px-4 sm:px-8 py-16 bg-[#f8fafc] dark:bg-[#1f2937]"
       >
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-blue-800 dark:text-blue-300 mb-10">Projects</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <h2 className="text-4xl font-extrabold text-center mb-16 text-blue-800 dark:text-blue-300">Projects</h2>
+          <div className="space-y-16">
             {[{
-              title: 'BorBuddy',
-              desc: 'Android social media app with Firebase Auth, real-time feed, image uploads, and AI-based post recommendations.',
-              link: 'https://github.com/arulmickel/BorBuddy',
-              label: 'View on GitHub →'
-            }, {
               title: 'AI Code Generator',
-              desc: 'Web app that turns UI screenshots into working HTML/CSS/JS using OpenCV, YOLOv8, and custom LLMs with Flask and Gradio.',
+              desc: 'Web-based system that generates HTML/CSS/JS code from UI screenshots using YOLOv8 and custom LLMs. Integrated with Flask, OpenCV, Docker, and Gradio.',
+              stack: ['Python', 'OpenCV', 'Hugging Face', 'Gradio', 'Docker'],
               link: '#',
-              label: 'View Demo →'
+            }, {
+              title: 'BorBuddy (Social Media App)',
+              desc: 'Real-time Android social media app with Firebase Auth, image upload, and Jetpack Compose UI built using Kotlin and MVVM.',
+              stack: ['Kotlin', 'Firebase', 'Android Studio', 'Jetpack Compose'],
+              link: 'https://github.com/arulmickel/BorBuddy',
             }, {
               title: 'Parking Finder App',
-              desc: 'Android app using Google Maps API to find nearby parking. Includes real-time tracking with Firebase and background location updates.',
+              desc: 'Android app that lets users search for nearby parking spots using Google Maps API with real-time tracking using Firebase.',
+              stack: ['Kotlin', 'Google Maps API', 'Firebase'],
               link: '#',
-              label: 'Coming Soon →'
             }, {
               title: 'Expense Tracker',
-              desc: 'CRUD web app to track finances using React, Node.js, MongoDB, and Material UI.',
+              desc: 'Full-stack CRUD app for managing expenses built with React, Node.js, MongoDB, and Material UI.',
+              stack: ['React', 'Node.js', 'MongoDB'],
               link: '#',
-              label: 'Coming Soon →'
-            }].map(({ title, desc, link, label }) => (
+            }].map((project, index) => (
               <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow hover:shadow-md transition"
-                key={title}
+                key={project.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.2 }}
+                className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg hover:shadow-xl transition duration-300 group"
               >
-                <h3 className="text-xl font-bold text-blue-600">{title}</h3>
-                <p className="mt-2 text-gray-600 dark:text-gray-300">{desc}</p>
-                <a href={link} className="text-accent hover:text-blue-700 transition duration-300 inline-block mt-4">{label}</a>
+                <div className="flex flex-col md:flex-row md:justify-between md:items-center">
+                  <div>
+                    <h3 className="text-2xl font-semibold text-blue-700 dark:text-blue-300 mb-2">{project.title}</h3>
+                    <p className="text-gray-700 dark:text-gray-300 mb-4">{project.desc}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {project.stack.map((tech) => (
+                        <span
+                          key={tech}
+                          className="px-3 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100 rounded-full text-sm font-medium"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <a
+                    href={project.link}
+                    className="mt-4 md:mt-0 inline-block text-accent dark:text-blue-400 hover:underline font-medium"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {project.link.includes('github') ? 'GitHub →' : 'View Demo →'}
+                  </a>
+                </div>
               </motion.div>
-            ))}
-          </div>
-        </div>
-      </motion.section>
-
-      {/* Tech Stack */}
-      <motion.section
-        variants={fadeInUp}
-        initial="initial"
-        animate="animate"
-        transition={{ duration: 0.6, delay: 0.6 }}
-        className="w-full px-8 py-16 bg-white dark:bg-gray-800"
-      >
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-blue-700 dark:text-blue-300 mb-8">Tech Stack</h2>
-          <div className="flex flex-wrap justify-center gap-4">
-            {[ 'Kotlin', 'React.js', 'Next.js', 'Firebase', 'MongoDB', 'Tailwind CSS', 'Java', 'C++', 'Python', 'Django', 'Flask', 'Node.js', 'OpenCV', 'YOLOv8', 'Hugging Face', 'AWS', 'Docker', 'CI/CD' ].map((tech) => (
-              <span key={tech} className="bg-blue-100 dark:bg-gray-700 text-blue-800 dark:text-white px-4 py-2 rounded-lg font-medium">
-                {tech}
-              </span>
             ))}
           </div>
         </div>
